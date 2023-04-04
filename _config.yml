@@ -71,3 +71,6 @@ defaults:
       type: "posts"
     values:
       permalink: ""
+
+plugins:
+  - jekyll-redirect-from
