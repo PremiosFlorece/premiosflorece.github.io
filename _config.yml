@@ -6,6 +6,7 @@ description: "Write an awesome description for your new site here. You can edit 
 keywords: "premios, florece, cannabis"
 skills: "Your Cannabis Awards"
 meta_author: Jean Manzano
+favicon: 'img/favicon.ico'
 
 # Google webmaster tools
 google_verify:
