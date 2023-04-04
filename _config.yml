@@ -4,7 +4,7 @@ email: premiosflorece@gmail.com
 url: https://premiosflorece.com
 description: "Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description."
 keywords: "premios, florece, cannabis"
-skills: "Tus Premios de Cannabis"
+skills: "Your Cannabis Awards"
 meta_author: Jean Manzano
 
 # Google webmaster tools
@@ -58,7 +58,7 @@ address:
   - line: PR-156, Caguas, 00726
 
 # Credits content
-credits: 'Freelancer is a free to use, open source Bootstrap theme created by <a href="http://startbootstrap.com">Start Bootstrap</a>.'
+credits: 'Premios Florece is a non proffit foundation. Visit our event: <a href="http://festivalflorece.com">Festival Florece</a>.'
 
 # Build settings
 markdown: kramdown
