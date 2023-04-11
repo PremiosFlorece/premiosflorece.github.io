@@ -1,0 +1,25 @@
+<!-- sponsor Grid Section -->
+<section id="sponsor">
+  <div class="container sponsor-flex-grid">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <h2>sponsors</h2>
+        <hr class="star-primary">
+      </div>
+    </div>
+    <div class="sponsor-flex-row">
+      {% for post in site.posts %}
+      <div class="sponsor-flex-item sponsor-item">
+        <a href="#sponsorModal-{{ post.modal-id }}" class="sponsor-link" data-toggle="modal">
+          <div class="caption">
+            <div class="caption-content">
+              <i class="fa fa-search-plus fa-3x"></i>
+            </div>
+          </div>
+          <img src="img/sponsor/{{ post.img }}" class="img-responsive" alt="{{ post.alt }}">
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
