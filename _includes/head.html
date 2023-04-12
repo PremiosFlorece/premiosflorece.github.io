@@ -13,10 +13,10 @@
   <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.url }}">
   <link rel="alternate" type="application/rss+xml" title="RSS" href="feed.xml">
   <link rel="icon" href="{{ site.url }}/{{site.favicon}}">
-  
+
   <!-- Custom CSS & Bootstrap Core CSS - Uses Bootswatch Flatly Theme: http://bootswatch.com/flatly/ -->
-  <link rel="stylesheet" href='{{ "/css/bootstrap.min.css" | absolute_url }}' >
-  <link rel="stylesheet" href='{{ "/css/main.css" | absolute_url }}' >
+  <link rel="stylesheet" href="{{ site.baseurl }}/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="{{ site.baseurl }}/css/main.css" >
 
   <!-- Google verification -->
   {% if site.google_verify %}
@@ -27,7 +27,7 @@
   <meta name="msvalidate.01" content="{{ site.bing_verify }}">{% endif %}
 
   <!-- Custom Fonts -->
-  <link rel="stylesheet" href='{{ "/css/font-awesome/css/all.min.css" | absolute_url }}' >
+  <link rel="stylesheet" href="{{ site.baseurl }}/css/font-awesome/css/all.min.css">
   <link href="//fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
   <link href="//fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
 

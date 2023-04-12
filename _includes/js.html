@@ -1,15 +1,15 @@
 {% include js_page.html %}
 
 <!-- Contact Form JavaScript -->
-<script src='{{ "/js/jqBootstrapValidation.js" | absolute_url }}'></script>
+<script src="{{ site.baseurl }}/js/jqBootstrapValidation.js"></script>
 {% if site.contact == "static" %}
-<script src='{{ "/js/contact_me_static.js" | absolute_url }}'></script>
+<script src="{{ site.baseurl }}/js/contact_me_static.js"></script>
 {% else %}
-<script src='{{ "/js/contact_me.js" | absolute_url }}'></script>
+<script src="{{ site.baseurl }}/js/contact_me.js"></script>
 {% endif %}
 
 <!-- Custom Theme JavaScript -->
-<script src='{{ "/js/freelancer.js" | absolute_url }}'></script>
+<script src="{{ site.baseurl }}/js/freelancer.js"></script>
 
 {% if site.contact == "disqus" %}
 <!-- Disqus Stuff -->
