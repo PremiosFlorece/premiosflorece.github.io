@@ -1,0 +1,57 @@
+<!-- <script type="text/javascript">
+    Swal.fire({
+        title: '.',
+        width: 600,
+        padding: '3em',
+        color: '#716add',
+        background: '#fff url(/images/trees.png)',
+        allowOutsideClick: false,
+        backdrop: `
+          rgba(0,0,123,0.4)
+          url("/img/nyan-cat.gif")
+          left top
+          no-repeat
+        `
+      })
+</script> -->
+
+<!-- Age verification popup trigger -->
+<script>
+    // Function to show age verification popup
+    function showAgeVerificationPopup() {
+      Swal.fire({
+        title: "Age Verification",
+        html: "Please confirm that you are 21 years or older.",
+        icon: "warning",
+        showCancelButton: true,
+        allowOutsideClick: false,
+        confirmButtonText: "Yes, I'm 21+",
+        cancelButtonText: "No, I'm not 21",
+        reverseButtons: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Proceed with business content
+          Swal.fire({
+            title: "Welcome!",
+            text: "You have confirmed that you are 21 years or older.",
+            icon: "success"
+          });
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          // Redirect or display message for underage visitors
+          Swal.fire({
+            title: "Sorry!",
+            text: "You must be 21 years or older to access this content.",
+            icon: "error"
+          }).then(() => {
+            // You can customize the redirect URL or other actions here
+            window.location.href = "https://example.com/underage";
+          });
+        }
+      });
+    }
+
+    // Call the age verification popup on page load
+    window.onload = function() {
+      showAgeVerificationPopup();
+    };
+  </script>
