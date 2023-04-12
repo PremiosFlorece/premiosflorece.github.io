@@ -1,13 +1,4 @@
-<!-- jQuery Version 1.11.0 -->
-<script src="{{ " js/jquery-1.11.0.js" }}"></script>
-
-<!-- Bootstrap Core JavaScript -->
-<script src="{{ " js/bootstrap.min.js" }}"></script>
-
-<!-- Plugin JavaScript -->
-<script src="{{ " js/jquery.easing.min.js" }}"></script>
-<script src="{{ " js/classie.js" }}"></script>
-<script src="{{ " js/cbpAnimatedHeader.js" }}"></script>
+{% include js_page.html %}
 
 <!-- Contact Form JavaScript -->
 <script src="{{ " js/jqBootstrapValidation.js" }}"></script>
@@ -25,10 +16,4 @@
 {% include js_disqus.html %}
 {% endif %}
 
-<!-- custom js -->
-<!-- <script src="{{ " js/embed-instagram-feed.bundle.js" }}"></script> -->
-<!-- <script src="{{ " js/instafeed.min.js" }}"></script> -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
-{% include js_ageverify.html %}
-<link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-borderless@5.0.15/borderless.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+{% include js_custom.html %}
