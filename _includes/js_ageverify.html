@@ -31,11 +31,11 @@
       }).then((result) => {
         if (result.isConfirmed) {
           // Proceed with business content
-          Swal.fire({
+          /*Swal.fire({
             title: "Welcome!",
             text: "You have confirmed that you are 21 years or older.",
             icon: "success"
-          });
+          }); */
         } else if (result.dismiss === Swal.DismissReason.cancel) {
           // Redirect or display message for underage visitors
           Swal.fire({
@@ -44,7 +44,7 @@
             icon: "error"
           }).then(() => {
             // You can customize the redirect URL or other actions here
-            window.location.href = "https://example.com/underage";
+            window.location.href = "/underage";
           });
         }
       });
