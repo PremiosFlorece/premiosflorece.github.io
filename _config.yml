@@ -56,8 +56,8 @@ social:
 
 # Postal address (add as many lines as necessary)
 address:
-  - line: Jardin Botanico Caguas
-  - line: PR-156, Caguas, 00726
+  - line: TBD
+  # - line: PR-156, Caguas, 00726
 
 # Credits content
 credits: 'Premios Florece is a non profit foundation. Visit our event: <a href="http://festivalflorece.com">Festival Florece</a>.'
