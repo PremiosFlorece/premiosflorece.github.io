@@ -1,19 +1,18 @@
-{% include js_page.html %}
+<!-- Bootstrap Core JavaScript -->
+<script src="{{ " js/bootstrap.min.js" | prepend: site.baseurl }}"></script>
 
-<!-- Contact Form JavaScript -->
-<script src="{{ " js/jqBootstrapValidation.js" }}"></script>
-{% if site.contact == "static" %}
-<script src="{{ " js/contact_me_static.js" }}"></script>
-{% else %}
-<script src="{{ " js/contact_me.js" }}"></script>
-{% endif %}
+<!-- Plugin JavaScript -->
+<script src="{{ " js/jquery.easing.min.js" | prepend: site.baseurl }}"></script>
+<script src="{{ " js/jqBootstrapValidation.js" | prepend: site.baseurl }}"></script>
 
 <!-- Custom Theme JavaScript -->
-<script src="{{ " js/freelancer.js" }}"></script>
+<script src="{{ " js/freelancer.js" | prepend: site.baseurl }}"></script>
 
+<!-- Disqus Comments -->
 {% if site.contact == "disqus" %}
-<!-- Disqus Stuff -->
 {% include js_disqus.html %}
 {% endif %}
 
-{% include js_custom.html %}
+<!-- Custom JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+{% include js_ageverify.html %}
