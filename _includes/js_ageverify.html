@@ -21,15 +21,18 @@
     function showAgeVerificationPopup() {
       // Check if user already verified
       if (localStorage.getItem('ageVerified') === 'true') {
+        console.log('[Age Verify] User already verified, skipping popup');
         return;
       }
 
       if (typeof Swal === 'undefined') {
-        console.warn('SweetAlert2 not loaded yet, retrying...');
-        setTimeout(showAgeVerificationPopup, 500);
+        console.warn('[Age Verify] SweetAlert2 not loaded yet, retrying in 100ms...');
+        setTimeout(showAgeVerificationPopup, 100);
         return;
       }
 
+      console.log('[Age Verify] Showing age verification popup');
+      
       Swal.fire({
         title: "Age Verification",
         html: "Please confirm that you are 21 years or older.",
@@ -37,14 +40,19 @@
         showCancelButton: true,
         allowOutsideClick: false,
         allowEscapeKey: false,
+        didOpen: function(modal) {
+          console.log('[Age Verify] Modal opened');
+        },
         confirmButtonText: "Yes, I'm 21+",
         cancelButtonText: "No, I'm not 21",
         reverseButtons: true
       }).then((result) => {
         if (result.isConfirmed) {
+          console.log('[Age Verify] User confirmed age');
           // Store verification in localStorage
           localStorage.setItem('ageVerified', 'true');
         } else if (result.dismiss === Swal.DismissReason.cancel) {
+          console.log('[Age Verify] User denied age confirmation');
           // Redirect for underage visitors
           Swal.fire({
             title: "Sorry!",
@@ -58,10 +66,15 @@
       });
     }
 
-    // Show popup when DOM is ready
+    // Show popup when everything is ready
+    function initAgeVerification() {
+      console.log('[Age Verify] Init called, document ready state:', document.readyState);
+      setTimeout(showAgeVerificationPopup, 500);
+    }
+
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', showAgeVerificationPopup);
+      document.addEventListener('DOMContentLoaded', initAgeVerification);
     } else {
-      showAgeVerificationPopup();
+      initAgeVerification();
     }
   </script>
