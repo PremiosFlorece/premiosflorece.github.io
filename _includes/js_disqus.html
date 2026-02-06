@@ -1,22 +1,60 @@
 <script type="text/javascript">
-  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-  var disqus_shortname = '{{ site.disqus_shortname }}'; // required: replace example with your forum shortname
+  /* * * CONFIGURATION VARIABLES * * */
+  var disqus_config = function () {
+    this.page.url = window.location.href;
+    this.page.identifier = window.location.pathname;
+  };
+
+  var disqus_shortname = '{{ site.disqus_shortname }}'; // required: replace with your forum shortname
 
   /* * * DON'T EDIT BELOW THIS LINE * * */
-  (function () {
-    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-    document.getElementById('disqus_thread').appendChild(dsq);
+  (function() {
+    // Check if Disqus is blocked
+    var disqusThread = document.getElementById('disqus_thread');
+    if (!disqusThread) {
+      console.warn('Disqus thread element not found');
+      return;
+    }
+
+    // Create fallback message for when Disqus is blocked
+    function showDisqusBlocked() {
+      disqusThread.innerHTML = '<div style="text-align: center; padding: 20px; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px;">' +
+        '<h5>💬 Comments Section</h5>' +
+        '<p style="margin: 10px 0;">Comments are powered by Disqus but appear to be blocked by your browser\'s tracking protection.</p>' +
+        '<p style="margin: 10px 0; font-size: 14px; color: #666;">To view comments, please disable tracking protection for this site or allow premiosflorece.com in your browser settings.</p>' +
+        '<p style="margin: 10px 0; font-size: 12px; color: #999;">This helps us maintain an active community discussion.</p>' +
+        '</div>';
+    }
+
+    try {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      
+      // Add error handling
+      s.onerror = function() {
+        console.warn('Failed to load Disqus comments');
+        showDisqusBlocked();
+      };
+      
+      // Timeout fallback
+      setTimeout(function() {
+        if (!document.querySelector('#disqus_thread iframe')) {
+          showDisqusBlocked();
+        }
+      }, 5000);
+      
+      (d.head || d.body).appendChild(s);
+    } catch (e) {
+      console.warn('Disqus loading error:', e);
+      showDisqusBlocked();
+    }
   })();
-
-  /* * * DON'T EDIT BELOW THIS LINE * * */
-  (function () {
-    var s = document.createElement('script'); s.async = true;
-    s.type = 'text/javascript';
-    s.src = '//' + disqus_shortname + '.disqus.com/count.js';
-    document.getElementById('disqus_thread').appendChild(s);
-  }());
 </script>
-<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
-    Disqus.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+<noscript>
+  <div style="text-align: center; padding: 20px; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px;">
+    <h5>💬 Comments Section</h5>
+    <p>JavaScript is required to view comments. Please enable JavaScript in your browser to participate in the community discussion.</p>
+    <p style="font-size: 14px; color: #666;">Comments are powered by <a href="https://disqus.com/?ref_noscript" target="_blank">Disqus</a></p>
+  </div>
+</noscript>

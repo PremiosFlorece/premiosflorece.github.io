@@ -17,10 +17,6 @@
 
 <!-- Age verification popup trigger -->
 <script>
-    // Clear age verification for testing - REMOVE THIS AFTER TESTING
-    // localStorage.removeItem('ageVerified');
-    // localStorage.removeItem('ageVerifiedDate');
-    
     // Prevent multiple initializations
     if (window.ageVerificationInitialized) {
       console.log('[Age Verify] Already initialized, skipping');
@@ -154,12 +150,11 @@
       }
 
       // Only initialize once when document is ready
-      if (document.readyState === 'complete') {
+      if (document.readyState !== 'loading') {
+        // DOM is already ready (interactive or complete)
         initAgeVerification();
       } else {
-        document.addEventListener('DOMContentLoaded', function() {
-          initAgeVerification();
-        }, { once: true });
+        document.addEventListener('DOMContentLoaded', initAgeVerification, { once: true });
       }
     }
   </script>
