@@ -1,34 +1,28 @@
 <!-- Navigation -->
-<nav class="navbar navbar-default navbar-fixed-top">
+<nav class="navbar navbar-expand-lg navbar-light fixed-top">
   <div class="container">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header page-scroll">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="{{ "#page-top" | absolute_url }}">{{ site.title }}</a>
-    </div>
+    <!-- Brand -->
+    <a class="navbar-brand page-scroll" href="{{ "#page-top" | absolute_url }}">{{ site.title }}</a>
+    
+    <!-- Toggler for mobile -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav navbar-right">
-        <li class="hidden">
-          <a href="{{ "#page-top" | absolute_url }}"></a>
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="#" style="color: #ccc; cursor: not-allowed;" onclick="return false;">Vote</a>
         </li>
-        <li class="page-scroll">
-          <a href="#" style="color: #ccc; cursor: not-allowed;" onclick="return false;">Vote</a>
+        <li class="nav-item">
+          <a class="nav-link" href="https://festivalflorece.com/">Festival</a>
         </li>
-        <li class="page-scroll">
-          <a href="https://festivalflorece.com/">Festival</a>
+        <li class="nav-item">
+          <a class="nav-link page-scroll" href="{{ "#about" | absolute_url }}">About</a>
         </li>
-        <li class="page-scroll">
-          <a href="{{ "#about" | absolute_url }}">About</a>
-        </li>
-        <li class="page-scroll">
-          <a href="{{ "#contact" | absolute_url }}">Contact</a>
+        <li class="nav-item">
+          <a class="nav-link page-scroll" href="{{ "#contact" | absolute_url }}">Contact</a>
         </li>
       </ul>
     </div>
