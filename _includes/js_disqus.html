@@ -16,13 +16,13 @@
       return;
     }
 
-    // Create fallback message for when Disqus is blocked
+    // Create fallback message for when Disqus is blocked — white card like contact page
     function showDisqusBlocked() {
-      disqusThread.innerHTML = '<div style="text-align: center; padding: 20px; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px;">' +
-        '<h5>💬 Comments Section</h5>' +
-        '<p style="margin: 10px 0;">Comments are powered by Disqus but appear to be blocked by your browser\'s tracking protection.</p>' +
-        '<p style="margin: 10px 0; font-size: 14px; color: #666;">To view comments, please disable tracking protection for this site or allow premiosflorece.com in your browser settings.</p>' +
-        '<p style="margin: 10px 0; font-size: 12px; color: #999;">This helps us maintain an active community discussion.</p>' +
+      disqusThread.innerHTML = '<div style="max-width:640px;margin:0 auto;padding:28px;background:#ffffff;border:1px solid #e9ecef;border-radius:8px;box-shadow:0 6px 18px rgba(18,28,42,0.06); text-align:center;">' +
+        '<h5 style="margin-top:0;color:#2c3e50;">💬 Comments Section</h5>' +
+        '<p style="margin: 12px 0; color:#333;">Comments are powered by Disqus but appear to be blocked by your browser\'s tracking protection.</p>' +
+        '<p style="margin: 8px 0; font-size: 14px; color: #666;">To view comments, disable tracking protection for this site or allow premiosflorece.com in your browser settings.</p>' +
+        '<div style="margin-top:14px;"><a href="https://disqus.com/" target="_blank" rel="noopener" style="color:#007bff;text-decoration:none;">Learn about Disqus</a></div>' +
         '</div>';
     }
 
@@ -106,9 +106,9 @@
   })();
 </script>
 <noscript>
-  <div style="text-align: center; padding: 20px; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px;">
-    <h5>💬 Comments Section</h5>
+  <div style="max-width:640px;margin:0 auto;padding:28px;background:#ffffff;border:1px solid #e9ecef;border-radius:8px;box-shadow:0 6px 18px rgba(18,28,42,0.06); text-align:center;">
+    <h5 style="margin-top:0;color:#2c3e50;">💬 Comments Section</h5>
     <p>JavaScript is required to view comments. Please enable JavaScript in your browser to participate in the community discussion.</p>
-    <p style="font-size: 14px; color: #666;">Comments are powered by <a href="https://disqus.com/?ref_noscript" target="_blank">Disqus</a></p>
+    <p style="font-size: 14px; color: #666;">Comments are powered by <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">Disqus</a></p>
   </div>
 </noscript>

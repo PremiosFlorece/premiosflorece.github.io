@@ -126,15 +126,16 @@
         const maxAttempts = 10;
         
         function tryInit() {
-          attempts++;
-          if (typeof Swal !== 'undefined' && Swal.fire) {
-            console.log('[Age Verify] SweetAlert2 loaded, showing popup');
-            setTimeout(showAgeVerificationPopup, 500);
-          } else if (attempts < maxAttempts) {
-            console.log(`[Age Verify] Attempt ${attempts}/${maxAttempts} - SweetAlert2 not ready, retrying...`);
-            setTimeout(tryInit, 300);
-          } else {
-            console.error('[Age Verify] Failed to load SweetAlert2 after maximum attempts');
+            attempts++;
+            console.debug('[Age Verify] tryInit attempt', attempts, 'typeof Swal=', typeof Swal, 'Swal=', (typeof Swal !== 'undefined' ? !!Swal.fire : 'undefined'));
+            if (typeof Swal !== 'undefined' && Swal.fire) {
+              console.log('[Age Verify] SweetAlert2 loaded, showing popup');
+              setTimeout(showAgeVerificationPopup, 500);
+            } else if (attempts < maxAttempts) {
+              console.log('[Age Verify] Attempt', attempts + '/' + maxAttempts, '- SweetAlert2 not ready, retrying...');
+              setTimeout(tryInit, 300);
+            } else {
+              console.error('[Age Verify] Failed to load SweetAlert2 after maximum attempts. Final typeof Swal=', typeof Swal);
             // Fallback to browser confirm
             if (!localStorage.getItem('ageVerified')) {
               if (confirm("You must be 21+ to access this site. Are you 21 or older?")) {
