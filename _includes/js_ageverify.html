@@ -17,129 +17,145 @@
 
 <!-- Age verification popup trigger -->
 <script>
-    // Function to show age verification popup
-    function showAgeVerificationPopup() {
-      // Check if user already verified
-      if (localStorage.getItem('ageVerified') === 'true') {
-        console.log('[Age Verify] User already verified, skipping popup');
-        return;
-      }
-
-      // More robust check for SweetAlert2
-      if (typeof Swal === 'undefined' || !Swal.fire) {
-        console.warn('[Age Verify] SweetAlert2 not loaded yet, retrying in 200ms...');
-        setTimeout(showAgeVerificationPopup, 200);
-        return;
-      }
-
-      console.log('[Age Verify] Showing age verification popup');
+    // Prevent multiple initializations
+    if (window.ageVerificationInitialized) {
+      console.log('[Age Verify] Already initialized, skipping');
+    } else {
+      window.ageVerificationInitialized = true;
       
-      try {
-        Swal.fire({
-          title: "🔞 Age Verification Required",
-          html: "<p style='font-size: 16px; margin: 20px 0;'>This site contains cannabis-related content.</p><p style='font-size: 14px; color: #666;'>Please confirm that you are 21 years or older to continue.</p>",
-          icon: "warning",
-          showCancelButton: true,
-          allowOutsideClick: false,
-          allowEscapeKey: false,
-          customClass: {
-            confirmButton: 'btn btn-success btn-lg',
-            cancelButton: 'btn btn-danger btn-lg',
-            popup: 'swal2-bootstrap-5'
-          },
-          buttonsStyling: false,
-          confirmButtonText: "✓ Yes, I'm 21+",
-          cancelButtonText: "✗ No, I'm under 21",
-          reverseButtons: true,
-          focusConfirm: true
-        }).then((result) => {
-          if (result.isConfirmed) {
-            console.log('[Age Verify] User confirmed age');
-            // Store verification in localStorage with timestamp
+      // Function to show age verification popup
+      function showAgeVerificationPopup() {
+        // Check if user already verified
+        if (localStorage.getItem('ageVerified') === 'true') {
+          console.log('[Age Verify] User already verified, skipping popup');
+          return;
+        }
+
+        // Check if popup is already showing
+        if (window.ageVerificationShowing) {
+          console.log('[Age Verify] Popup already showing, skipping');
+          return;
+        }
+
+        // More robust check for SweetAlert2
+        if (typeof Swal === 'undefined' || !Swal.fire) {
+          console.warn('[Age Verify] SweetAlert2 not loaded yet, retrying in 200ms...');
+          setTimeout(showAgeVerificationPopup, 200);
+          return;
+        }
+
+        console.log('[Age Verify] Showing age verification popup');
+        window.ageVerificationShowing = true;
+        
+        try {
+          Swal.fire({
+            title: "🔞 Age Verification Required",
+            html: "<p style='font-size: 16px; margin: 20px 0;'>This site contains cannabis-related content.</p><p style='font-size: 14px; color: #666;'>Please confirm that you are 21 years or older to continue.</p>",
+            icon: "warning",
+            showCancelButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            customClass: {
+              confirmButton: 'btn btn-success btn-lg',
+              cancelButton: 'btn btn-danger btn-lg',
+              popup: 'swal2-bootstrap-5'
+            },
+            buttonsStyling: false,
+            confirmButtonText: "✓ Yes, I'm 21+",
+            cancelButtonText: "✗ No, I'm under 21",
+            reverseButtons: true,
+            focusConfirm: true,
+            didClose: function() {
+              window.ageVerificationShowing = false;
+            }
+          }).then((result) => {
+            window.ageVerificationShowing = false;
+            if (result.isConfirmed) {
+              console.log('[Age Verify] User confirmed age');
+              // Store verification in localStorage with timestamp
+              localStorage.setItem('ageVerified', 'true');
+              localStorage.setItem('ageVerifiedDate', new Date().toISOString());
+              
+              // Show success message briefly
+              Swal.fire({
+                title: "Welcome!",
+                text: "Thank you for verifying your age.",
+                icon: "success",
+                timer: 2000,
+                showConfirmButton: false
+              });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+              console.log('[Age Verify] User denied age confirmation');
+              // Redirect for underage visitors
+              Swal.fire({
+                title: "Access Restricted",
+                html: "<p>You must be 21 years or older to access this content.</p><p style='color: #666; font-size: 14px;'>You will be redirected to a safe page.</p>",
+                icon: "error",
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                confirmButtonText: "Understood"
+              }).then(() => {
+                window.location.href = "/underage.html";
+              });
+            }
+          });
+        } catch (error) {
+          window.ageVerificationShowing = false;
+          console.error('[Age Verify] Error showing popup:', error);
+          // Fallback to browser confirm if SweetAlert fails
+          if (confirm("You must be 21+ to access this site. Are you 21 or older?")) {
             localStorage.setItem('ageVerified', 'true');
-            localStorage.setItem('ageVerifiedDate', new Date().toISOString());
-            
-            // Show success message briefly
-            Swal.fire({
-              title: "Welcome!",
-              text: "Thank you for verifying your age.",
-              icon: "success",
-              timer: 2000,
-              showConfirmButton: false
-            });
-          } else if (result.dismiss === Swal.DismissReason.cancel) {
-            console.log('[Age Verify] User denied age confirmation');
-            // Redirect for underage visitors
-            Swal.fire({
-              title: "Access Restricted",
-              html: "<p>You must be 21 years or older to access this content.</p><p style='color: #666; font-size: 14px;'>You will be redirected to a safe page.</p>",
-              icon: "error",
-              allowOutsideClick: false,
-              allowEscapeKey: false,
-              confirmButtonText: "Understood"
-            }).then(() => {
-              window.location.href = "/underage.html";
-            });
+          } else {
+            window.location.href = "/underage.html";
           }
-        });
-      } catch (error) {
-        console.error('[Age Verify] Error showing popup:', error);
-        // Fallback to browser confirm if SweetAlert fails
-        if (confirm("You must be 21+ to access this site. Are you 21 or older?")) {
-          localStorage.setItem('ageVerified', 'true');
-        } else {
-          window.location.href = "/underage.html";
         }
       }
-    }
 
-    // Enhanced initialization with retry mechanism
-    function initAgeVerification() {
-      console.log('[Age Verify] Init called, document ready state:', document.readyState);
-      
-      // Wait a bit longer for SweetAlert2 to fully load
-      let attempts = 0;
-      const maxAttempts = 10;
-      
-      function tryInit() {
-        attempts++;
-        if (typeof Swal !== 'undefined' && Swal.fire) {
-          console.log('[Age Verify] SweetAlert2 loaded, showing popup');
-          setTimeout(showAgeVerificationPopup, 300);
-        } else if (attempts < maxAttempts) {
-          console.log(`[Age Verify] Attempt ${attempts}/${maxAttempts} - SweetAlert2 not ready, retrying...`);
-          setTimeout(tryInit, 300);
-        } else {
-          console.error('[Age Verify] Failed to load SweetAlert2 after maximum attempts');
-          // Fallback to browser confirm
-          if (!localStorage.getItem('ageVerified')) {
-            if (confirm("You must be 21+ to access this site. Are you 21 or older?")) {
-              localStorage.setItem('ageVerified', 'true');
-            } else {
-              window.location.href = "/underage.html";
+      // Single initialization function
+      function initAgeVerification() {
+        console.log('[Age Verify] Single init called, document ready state:', document.readyState);
+        
+        // Only show if not already verified
+        if (localStorage.getItem('ageVerified') === 'true') {
+          console.log('[Age Verify] Already verified, skipping initialization');
+          return;
+        }
+        
+        // Wait for SweetAlert2 to be ready
+        let attempts = 0;
+        const maxAttempts = 10;
+        
+        function tryInit() {
+          attempts++;
+          if (typeof Swal !== 'undefined' && Swal.fire) {
+            console.log('[Age Verify] SweetAlert2 loaded, showing popup');
+            setTimeout(showAgeVerificationPopup, 500);
+          } else if (attempts < maxAttempts) {
+            console.log(`[Age Verify] Attempt ${attempts}/${maxAttempts} - SweetAlert2 not ready, retrying...`);
+            setTimeout(tryInit, 300);
+          } else {
+            console.error('[Age Verify] Failed to load SweetAlert2 after maximum attempts');
+            // Fallback to browser confirm
+            if (!localStorage.getItem('ageVerified')) {
+              if (confirm("You must be 21+ to access this site. Are you 21 or older?")) {
+                localStorage.setItem('ageVerified', 'true');
+              } else {
+                window.location.href = "/underage.html";
+              }
             }
           }
         }
+        
+        tryInit();
       }
-      
-      tryInit();
-    }
 
-    // Initialize when DOM and scripts are ready
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initAgeVerification);
-    } else if (document.readyState === 'interactive') {
-      setTimeout(initAgeVerification, 100);
-    } else {
-      // Document already fully loaded
-      initAgeVerification();
-    }
-    
-    // Also try on window load as fallback
-    window.addEventListener('load', function() {
-      if (!localStorage.getItem('ageVerified') && typeof Swal !== 'undefined') {
-        console.log('[Age Verify] Window loaded, checking if popup needed');
-        setTimeout(showAgeVerificationPopup, 500);
+      // Only initialize once when document is ready
+      if (document.readyState === 'complete') {
+        initAgeVerification();
+      } else {
+        document.addEventListener('DOMContentLoaded', function() {
+          initAgeVerification();
+        }, { once: true });
       }
-    });
+    }
   </script>
