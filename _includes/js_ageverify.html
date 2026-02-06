@@ -136,12 +136,39 @@
               setTimeout(tryInit, 300);
             } else {
               console.error('[Age Verify] Failed to load SweetAlert2 after maximum attempts. Final typeof Swal=', typeof Swal);
-            // Fallback to browser confirm
-            if (!localStorage.getItem('ageVerified')) {
-              if (confirm("You must be 21+ to access this site. Are you 21 or older?")) {
-                localStorage.setItem('ageVerified', 'true');
-              } else {
-                window.location.href = "/underage.html";
+            // Try injecting SweetAlert2 as a last-resort fallback (CDN)
+            if (typeof Swal === 'undefined') {
+              try {
+                console.debug('[Age Verify] injecting SweetAlert2 fallback script');
+                var s = document.createElement('script');
+                s.src = 'https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js';
+                s.onload = function() {
+                  console.log('[Age Verify] Fallback SweetAlert2 loaded, attempting to show popup');
+                  tryInit();
+                };
+                s.onerror = function() {
+                  console.warn('[Age Verify] fallback SweetAlert2 failed to load');
+                  // Final fallback to confirm()
+                  if (!localStorage.getItem('ageVerified')) {
+                    if (confirm("You must be 21+ to access this site. Are you 21 or older?")) {
+                      localStorage.setItem('ageVerified', 'true');
+                    } else {
+                      window.location.href = "/underage.html";
+                    }
+                  }
+                };
+                (document.head || document.body).appendChild(s);
+              } catch (e) {
+                console.error('[Age Verify] error injecting fallback script', e);
+              }
+            } else {
+              // Fallback to browser confirm
+              if (!localStorage.getItem('ageVerified')) {
+                if (confirm("You must be 21+ to access this site. Are you 21 or older?")) {
+                  localStorage.setItem('ageVerified', 'true');
+                } else {
+                  window.location.href = "/underage.html";
+                }
               }
             }
           }
@@ -158,4 +185,36 @@
         document.addEventListener('DOMContentLoaded', initAgeVerification, { once: true });
       }
     }
+
+    // Wire age-verify debug widget if present
+    (function() {
+      function updateDebugUI() {
+        var widget = document.getElementById('age-verify-debug');
+        var status = document.getElementById('age-verify-status');
+        if (!widget || !status) return;
+        var verified = localStorage.getItem('ageVerified') === 'true';
+        status.textContent = 'Age Verify: ' + (verified ? 'verified' : 'not verified');
+        widget.style.display = 'block';
+      }
+
+      document.addEventListener('DOMContentLoaded', function() {
+        updateDebugUI();
+        var btn = document.getElementById('age-verify-reset-btn');
+        if (btn) {
+          btn.addEventListener('click', function() {
+            localStorage.removeItem('ageVerified');
+            localStorage.removeItem('ageVerifiedDate');
+            console.log('[Age Verify] Cleared verification from localStorage');
+            // re-run init after a short delay
+            setTimeout(function() {
+              try {
+                window.ageVerificationInitialized = false;
+                initAgeVerification();
+              } catch (e) { console.error(e); }
+              updateDebugUI();
+            }, 250);
+          });
+        }
+      }, { once: true });
+    })();
   </script>

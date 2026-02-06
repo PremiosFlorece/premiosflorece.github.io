@@ -9,6 +9,30 @@ body {
     padding-top: 90px;
 }
 
+/* Fixed navbar styling to ensure it stays visible */
+.navbar.fixed-top {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1030;
+    background: rgba(255,255,255,0.95);
+    -webkit-backdrop-filter: saturate(180%) blur(6px);
+    backdrop-filter: saturate(180%) blur(6px);
+}
+
+/* White voting section background */
+.voting-section-white {
+    background: #ffffff;
+    color: #2c3e50;
+    padding: 80px 0;
+}
+
+#age-verify-debug {
+    position: relative;
+}
+
+
 @media (max-width: 979px) {
   body {
     padding-top: 0px;
