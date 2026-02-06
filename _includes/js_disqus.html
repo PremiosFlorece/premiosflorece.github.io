@@ -27,24 +27,78 @@
     }
 
     try {
-      var d = document, s = d.createElement('script');
-      s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
-      s.setAttribute('data-timestamp', +new Date());
-      
-      // Add error handling
-      s.onerror = function() {
-        console.warn('Failed to load Disqus comments');
+      var d = document;
+
+      // Diagnostic log: ensure shortname is present
+      console.debug('[Disqus] shortname:', disqus_shortname);
+
+      // Robust loader with retries and diagnostics
+      function loadDisqus(attempt) {
+        attempt = attempt || 1;
+        var s = d.createElement('script');
+        var src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        s.src = src;
+        s.async = true;
+        s.setAttribute('data-timestamp', +new Date());
+
+        console.debug('[Disqus] load attempt', attempt, 'src=', src);
+
+        var loaded = false;
+        s.onload = function() {
+          loaded = true;
+          console.debug('[Disqus] embed script loaded (attempt', attempt + ')');
+          // Small delay to let Disqus initialize
+          setTimeout(function() {
+            if (typeof DISQUS === 'undefined') {
+              console.warn('[Disqus] DISQUS global not found after load');
+              // fallback UI
+              showDisqusBlocked();
+            } else {
+              console.debug('[Disqus] DISQUS initialized');
+            }
+          }, 500);
+        };
+
+        s.onerror = function(err) {
+          console.warn('[Disqus] script error on attempt', attempt, err || 'error');
+          // remove the failing script node
+          if (s.parentNode) s.parentNode.removeChild(s);
+          if (attempt < 3) {
+            var delay = 800 * attempt; // exponential-ish backoff
+            console.debug('[Disqus] retrying in', delay, 'ms');
+            setTimeout(function() { loadDisqus(attempt + 1); }, delay);
+          } else {
+            console.warn('[Disqus] failed to load after', attempt, 'attempts');
+            showDisqusBlocked();
+          }
+        };
+
+        // Fallback if iframe not created after timeout
+        setTimeout(function() {
+          if (!loaded || !document.querySelector('#disqus_thread iframe')) {
+            console.debug('[Disqus] iframe not found after timeout (attempt', attempt + ')');
+            // if we haven't already errored, trigger a retry or fallback
+            if (!loaded && attempt < 3) {
+              if (s.parentNode) s.parentNode.removeChild(s);
+              loadDisqus(attempt + 1);
+              return;
+            }
+            if (!document.querySelector('#disqus_thread iframe')) {
+              showDisqusBlocked();
+            }
+          }
+        }, 6000 + (attempt * 400));
+
+        (d.head || d.body).appendChild(s);
+      }
+
+      // If shortname is missing, show fallback immediately and log
+      if (!disqus_shortname || disqus_shortname.indexOf('{{') === 0) {
+        console.warn('[Disqus] disqus_shortname seems empty or not set:', disqus_shortname);
         showDisqusBlocked();
-      };
-      
-      // Timeout fallback
-      setTimeout(function() {
-        if (!document.querySelector('#disqus_thread iframe')) {
-          showDisqusBlocked();
-        }
-      }, 5000);
-      
-      (d.head || d.body).appendChild(s);
+      } else {
+        loadDisqus(1);
+      }
     } catch (e) {
       console.warn('Disqus loading error:', e);
       showDisqusBlocked();
