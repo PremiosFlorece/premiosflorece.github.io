@@ -10,11 +10,56 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"
         onerror="console.error('Failed to load SweetAlert2')"></script>
 
+<!-- Extension conflict handler - Load early -->
+<script src="{{ "/js/extension-conflict-handler.js" | prepend: site.baseurl }}"
+        onerror="console.warn('Extension conflict handler failed to load')"></script>
+
 <!-- Error handling script -->
 <script>
-// Global error handler
+// Global error handler with filtering for common extension errors
 window.addEventListener('error', function(e) {
-  console.error('Script error:', e.filename, e.lineno, e.message);
+  // Filter out common extension/security library errors that we can't control
+  const ignoredErrors = [
+    'lockdown-install',
+    'SES removing unpermitted intrinsics',
+    'removing intrinsics',
+    'Script error.',
+    'ResizeObserver loop limit exceeded',
+    'chrome-extension',
+    'moz-extension',
+    'webkit-masked-url',
+    'Non-Error promise rejection captured'
+  ];
+  
+  const errorMessage = e.message || e.error?.message || '';
+  const shouldIgnore = ignoredErrors.some(ignored => 
+    errorMessage.toLowerCase().includes(ignored.toLowerCase()) ||
+    (e.filename && (e.filename.includes('extension') || e.filename.includes('chrome://')))
+  );
+  
+  if (!shouldIgnore) {
+    console.error('Script error:', e.filename, e.lineno, e.message);
+  }
+});
+
+// Handle unhandled promise rejections
+window.addEventListener('unhandledrejection', function(event) {
+  const reason = event.reason?.message || event.reason || 'Unknown error';
+  const ignoredPromiseErrors = [
+    'lockdown',
+    'SES',
+    'removing intrinsics',
+    'chrome-extension',
+    'moz-extension'
+  ];
+  
+  const shouldIgnore = ignoredPromiseErrors.some(ignored => 
+    reason.toString().toLowerCase().includes(ignored.toLowerCase())
+  );
+  
+  if (!shouldIgnore) {
+    console.error('Unhandled promise rejection:', reason);
+  }
 });
 
 // Check if critical libraries loaded
@@ -28,6 +73,8 @@ document.addEventListener('DOMContentLoaded', function() {
   if (typeof Swal === 'undefined') {
     console.warn('SweetAlert2 failed to load');
   }
+  
+  console.log('[Site] Page loaded successfully, libraries checked');
 });
 </script>
 
