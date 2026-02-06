@@ -12,10 +12,23 @@
 
 <!-- Error handling script -->
 <script>
-// Global error handler
-window.addEventListener('error', function(e) {
-  console.error('Script error:', e.filename, e.lineno, e.message);
-});
+// Simple console noise filter for extension-related errors
+(function() {
+  const originalError = console.error;
+  console.error = function(...args) {
+    const message = args.join(' ').toLowerCase();
+    // Filter out common extension/security library noise
+    if (message.includes('lockdown') || 
+        message.includes('removing intrinsics') || 
+        message.includes('mapprototype') ||
+        message.includes('dateprototype') ||
+        message.includes('ses removing')) {
+      return; // Silently ignore these
+    }
+    // Pass through actual errors
+    originalError.apply(console, args);
+  };
+})();
 
 // Check if critical libraries loaded
 document.addEventListener('DOMContentLoaded', function() {
