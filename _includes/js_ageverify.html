@@ -17,6 +17,10 @@
 
 <!-- Age verification popup trigger -->
 <script>
+    // Clear age verification for testing - REMOVE THIS AFTER TESTING
+    // localStorage.removeItem('ageVerified');
+    // localStorage.removeItem('ageVerifiedDate');
+    
     // Prevent multiple initializations
     if (window.ageVerificationInitialized) {
       console.log('[Age Verify] Already initialized, skipping');
