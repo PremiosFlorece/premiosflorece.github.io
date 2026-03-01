@@ -1,0 +1,94 @@
+<!-- Sponsors Section — enabled via show_sponsors: true in _config.yml -->
+{% if site.show_sponsors %}
+<section id="sponsors">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <h2>Our Sponsors</h2>
+        <hr class="star-primary">
+        <p class="text-muted mb-5">Thank you to our sponsors for supporting the cannabis community in Puerto Rico.</p>
+      </div>
+    </div>
+
+    {% assign gold = site.sponsors | where: "tier", "gold" %}
+    {% assign silver = site.sponsors | where: "tier", "silver" %}
+    {% assign bronze = site.sponsors | where: "tier", "bronze" %}
+    {% assign untiered = site.sponsors | where: "tier", nil %}
+
+    {% if gold.size > 0 %}
+    <!-- Gold Sponsors -->
+    <div class="row justify-content-center mb-4">
+      <div class="col-12 text-center mb-2">
+        <h5 class="text-warning text-uppercase"><i class="fas fa-trophy"></i> Gold Sponsors</h5>
+      </div>
+      {% for sponsor in gold %}
+      <div class="col-6 col-md-4 col-lg-3 mb-4 text-center">
+        <a href="{{ sponsor.url }}" target="_blank" rel="noopener" class="sponsor-card d-block p-3">
+          <img src="{{ sponsor.logo }}" alt="{{ sponsor.name }}" class="img-fluid" style="max-height: 120px; object-fit: contain;">
+          <p class="mt-2 mb-0 small text-muted">{{ sponsor.name }}</p>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if silver.size > 0 %}
+    <!-- Silver Sponsors -->
+    <div class="row justify-content-center mb-4">
+      <div class="col-12 text-center mb-2">
+        <h5 class="text-secondary text-uppercase"><i class="fas fa-medal"></i> Silver Sponsors</h5>
+      </div>
+      {% for sponsor in silver %}
+      <div class="col-4 col-md-3 col-lg-2 mb-3 text-center">
+        <a href="{{ sponsor.url }}" target="_blank" rel="noopener" class="sponsor-card d-block p-2">
+          <img src="{{ sponsor.logo }}" alt="{{ sponsor.name }}" class="img-fluid" style="max-height: 80px; object-fit: contain;">
+          <p class="mt-1 mb-0 small text-muted">{{ sponsor.name }}</p>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if bronze.size > 0 %}
+    <!-- Bronze Sponsors -->
+    <div class="row justify-content-center mb-4">
+      <div class="col-12 text-center mb-2">
+        <h5 class="text-uppercase" style="color: #cd7f32;"><i class="fas fa-award"></i> Bronze Sponsors</h5>
+      </div>
+      {% for sponsor in bronze %}
+      <div class="col-4 col-md-2 mb-3 text-center">
+        <a href="{{ sponsor.url }}" target="_blank" rel="noopener" class="sponsor-card d-block p-2">
+          <img src="{{ sponsor.logo }}" alt="{{ sponsor.name }}" class="img-fluid" style="max-height: 60px; object-fit: contain;">
+          <p class="mt-1 mb-0 small text-muted">{{ sponsor.name }}</p>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if untiered.size > 0 %}
+    <!-- Sponsors (no tier) -->
+    <div class="row justify-content-center mb-4">
+      {% for sponsor in untiered %}
+      <div class="col-4 col-md-3 col-lg-2 mb-3 text-center">
+        <a href="{{ sponsor.url }}" target="_blank" rel="noopener" class="sponsor-card d-block p-2">
+          <img src="{{ sponsor.logo }}" alt="{{ sponsor.name }}" class="img-fluid" style="max-height: 80px; object-fit: contain;">
+          <p class="mt-1 mb-0 small text-muted">{{ sponsor.name }}</p>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Become a Sponsor CTA -->
+    <div class="row">
+      <div class="col-12 text-center mt-3">
+        <p class="text-muted">Interested in sponsoring Premios Florece?</p>
+        <a href="mailto:{{ site.email }}?subject=Sponsorship%20Inquiry%20-%20Premios%20Florece%202026" class="btn btn-outline-success">
+          <i class="fas fa-envelope"></i> Become a Sponsor
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}

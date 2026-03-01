@@ -58,6 +58,26 @@ address:
 # Credits content
 credits: 'Premios Florece is a non profit foundation. Visit our event: <a href="https://www.instagram.com/FestivalFlorece/">Festival Florece</a>.'
 
+# Sponsors section
+# Set show_sponsors to true when ready to display on the site
+show_sponsors: false
+sponsors:
+  - name: "Sponsor Name"
+    logo: "img/sponsor/sponsor1.png"
+    url: "https://example.com"
+    tier: "gold"
+  # - name: "Another Sponsor"
+  #   logo: "img/sponsor/sponsor2.png"
+  #   url: "https://example.com"
+  #   tier: "silver"
+  # - name: "Third Sponsor"
+  #   logo: "img/sponsor/sponsor3.png"
+  #   url: "https://example.com"
+  #   tier: "bronze"
+  #
+  # Tiers: gold (large), silver (medium), bronze (small)
+  # Add sponsor logos to img/sponsor/ directory
+
 # Build settings
 markdown: kramdown
 permalink: pretty

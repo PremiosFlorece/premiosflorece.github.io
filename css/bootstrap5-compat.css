@@ -196,3 +196,27 @@
         padding: 10px 20px;
     }
 }
+
+/* Sponsors Section */
+#sponsors {
+    padding: 60px 0;
+    background-color: #f8f9fa;
+}
+
+#sponsors .sponsor-card {
+    background: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#sponsors .sponsor-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+#sponsors .sponsor-card img {
+    display: block;
+    margin: 0 auto;
+}
