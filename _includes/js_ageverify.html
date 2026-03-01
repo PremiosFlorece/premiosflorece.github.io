@@ -17,200 +17,203 @@
 
 <!-- Age verification popup trigger -->
 <script>
+(function() {
     // Prevent multiple initializations
     if (window.ageVerificationInitialized) {
       console.log('[Age Verify] Already initialized, skipping');
-    } else {
-      window.ageVerificationInitialized = true;
-      
-      // Function to show age verification popup
-      function showAgeVerificationPopup() {
-        // Check if user already verified
-        if (localStorage.getItem('ageVerified') === 'true') {
-          console.log('[Age Verify] User already verified, skipping popup');
-          return;
-        }
+      return;
+    }
+    window.ageVerificationInitialized = true;
 
-        // Check if popup is already showing
-        if (window.ageVerificationShowing) {
-          console.log('[Age Verify] Popup already showing, skipping');
-          return;
-        }
+    // Debug widget updater — exposed globally so it can be called after verification
+    window.updateAgeDebugUI = function() {
+      var widget = document.getElementById('age-verify-debug');
+      var status = document.getElementById('age-verify-status');
+      if (!widget || !status) return;
+      var verified = localStorage.getItem('ageVerified') === 'true';
+      status.textContent = 'Age Verify: ' + (verified ? 'verified' : 'not verified');
+      widget.style.display = 'block';
+    };
 
-        // More robust check for SweetAlert2
-        if (typeof Swal === 'undefined' || !Swal.fire) {
-          console.warn('[Age Verify] SweetAlert2 not loaded yet, retrying in 200ms...');
-          setTimeout(showAgeVerificationPopup, 200);
-          return;
-        }
+    // Function to show age verification popup
+    window.showAgeVerificationPopup = function() {
+      // Check if user already verified
+      if (localStorage.getItem('ageVerified') === 'true') {
+        console.log('[Age Verify] User already verified, skipping popup');
+        window.updateAgeDebugUI();
+        return;
+      }
 
-        console.log('[Age Verify] Showing age verification popup');
-        window.ageVerificationShowing = true;
-        
-        try {
-          Swal.fire({
-            title: "🔞 Age Verification Required",
-            html: "<p style='font-size: 16px; margin: 20px 0;'>This site contains cannabis-related content.</p><p style='font-size: 14px; color: #666;'>Please confirm that you are 21 years or older to continue.</p>",
-            icon: "warning",
-            showCancelButton: true,
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-            confirmButtonColor: '#28a745',
-            cancelButtonColor: '#dc3545',
-            confirmButtonText: "✓ Yes, I'm 21+",
-            cancelButtonText: "✗ No, I'm under 21",
-            reverseButtons: true,
-            focusConfirm: true,
-            didClose: function() {
-              window.ageVerificationShowing = false;
-            }
-          }).then((result) => {
+      // Check if popup is already showing
+      if (window.ageVerificationShowing) {
+        console.log('[Age Verify] Popup already showing, skipping');
+        return;
+      }
+
+      // More robust check for SweetAlert2
+      if (typeof Swal === 'undefined' || !Swal.fire) {
+        console.warn('[Age Verify] SweetAlert2 not loaded yet, retrying in 200ms...');
+        setTimeout(window.showAgeVerificationPopup, 200);
+        return;
+      }
+
+      console.log('[Age Verify] Showing age verification popup');
+      window.ageVerificationShowing = true;
+
+      try {
+        Swal.fire({
+          title: "🔞 Age Verification Required",
+          html: "<p style='font-size: 16px; margin: 20px 0;'>This site contains cannabis-related content.</p><p style='font-size: 14px; color: #666;'>Please confirm that you are 21 years or older to continue.</p>",
+          icon: "warning",
+          showCancelButton: true,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          confirmButtonColor: '#28a745',
+          cancelButtonColor: '#dc3545',
+          confirmButtonText: "✓ Yes, I'm 21+",
+          cancelButtonText: "✗ No, I'm under 21",
+          reverseButtons: true,
+          focusConfirm: true,
+          didClose: function() {
             window.ageVerificationShowing = false;
-            if (result.isConfirmed) {
-              console.log('[Age Verify] User confirmed age');
-              // Store verification in localStorage with timestamp
-              localStorage.setItem('ageVerified', 'true');
-              localStorage.setItem('ageVerifiedDate', new Date().toISOString());
-              
-              // Show success message briefly
-              Swal.fire({
-                title: "Welcome!",
-                text: "Thank you for verifying your age.",
-                icon: "success",
-                timer: 2000,
-                showConfirmButton: false
-              });
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
-              console.log('[Age Verify] User denied age confirmation');
-              // Redirect for underage visitors
-              Swal.fire({
-                title: "Access Restricted",
-                html: "<p>You must be 21 years or older to access this content.</p><p style='color: #666; font-size: 14px;'>You will be redirected to a safe page.</p>",
-                icon: "error",
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-                confirmButtonText: "Understood"
-              }).then(() => {
-                window.location.href = "/underage.html";
-              });
-            }
-          });
-        } catch (error) {
+          }
+        }).then(function(result) {
           window.ageVerificationShowing = false;
-          console.error('[Age Verify] Error showing popup:', error);
-          // Fallback to browser confirm if SweetAlert fails
-          if (confirm("You must be 21+ to access this site. Are you 21 or older?")) {
+          if (result.isConfirmed) {
+            console.log('[Age Verify] User confirmed age');
             localStorage.setItem('ageVerified', 'true');
-          } else {
-            window.location.href = "/underage.html";
+            localStorage.setItem('ageVerifiedDate', new Date().toISOString());
+            window.updateAgeDebugUI();
+
+            Swal.fire({
+              title: "Welcome!",
+              text: "Thank you for verifying your age.",
+              icon: "success",
+              timer: 2000,
+              showConfirmButton: false
+            });
+          } else if (result.dismiss === Swal.DismissReason.cancel) {
+            console.log('[Age Verify] User denied age confirmation');
+            Swal.fire({
+              title: "Access Restricted",
+              html: "<p>You must be 21 years or older to access this content.</p><p style='color: #666; font-size: 14px;'>You will be redirected to a safe page.</p>",
+              icon: "error",
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+              confirmButtonText: "Understood"
+            }).then(function() {
+              window.location.href = "/underage.html";
+            });
           }
+        });
+      } catch (error) {
+        window.ageVerificationShowing = false;
+        console.error('[Age Verify] Error showing popup:', error);
+        if (confirm("You must be 21+ to access this site. Are you 21 or older?")) {
+          localStorage.setItem('ageVerified', 'true');
+          window.updateAgeDebugUI();
+        } else {
+          window.location.href = "/underage.html";
         }
       }
+    };
 
-      // Single initialization function
-      function initAgeVerification() {
-        console.log('[Age Verify] Single init called, document ready state:', document.readyState);
-        
-        // Only show if not already verified
-        if (localStorage.getItem('ageVerified') === 'true') {
-          console.log('[Age Verify] Already verified, skipping initialization');
-          return;
-        }
-        
-        // Wait for SweetAlert2 to be ready
-        let attempts = 0;
-        const maxAttempts = 10;
-        
-        function tryInit() {
-            attempts++;
-            console.debug('[Age Verify] tryInit attempt', attempts, 'typeof Swal=', typeof Swal, 'Swal=', (typeof Swal !== 'undefined' ? !!Swal.fire : 'undefined'));
-            if (typeof Swal !== 'undefined' && Swal.fire) {
-              console.log('[Age Verify] SweetAlert2 loaded, showing popup');
-              setTimeout(showAgeVerificationPopup, 500);
-            } else if (attempts < maxAttempts) {
-              console.log('[Age Verify] Attempt', attempts + '/' + maxAttempts, '- SweetAlert2 not ready, retrying...');
-              setTimeout(tryInit, 300);
-            } else {
-              console.error('[Age Verify] Failed to load SweetAlert2 after maximum attempts. Final typeof Swal=', typeof Swal);
-            // Try injecting SweetAlert2 as a last-resort fallback (CDN)
-            if (typeof Swal === 'undefined') {
-              try {
-                console.debug('[Age Verify] injecting SweetAlert2 fallback script');
-                var s = document.createElement('script');
-                s.src = 'https://cdn.jsdelivr.net/npm/sweetalert2@11.26.21/dist/sweetalert2.min.js';
-                s.onload = function() {
-                  console.log('[Age Verify] Fallback SweetAlert2 loaded, attempting to show popup');
-                  tryInit();
-                };
-                s.onerror = function() {
-                  console.warn('[Age Verify] fallback SweetAlert2 failed to load');
-                  // Final fallback to confirm()
-                  if (!localStorage.getItem('ageVerified')) {
-                    if (confirm("You must be 21+ to access this site. Are you 21 or older?")) {
-                      localStorage.setItem('ageVerified', 'true');
-                    } else {
-                      window.location.href = "/underage.html";
-                    }
+    // Single initialization function — exposed globally for reset button
+    window.initAgeVerification = function() {
+      console.log('[Age Verify] Init called, document ready state:', document.readyState);
+
+      if (localStorage.getItem('ageVerified') === 'true') {
+        console.log('[Age Verify] Already verified, skipping initialization');
+        window.updateAgeDebugUI();
+        return;
+      }
+
+      var attempts = 0;
+      var maxAttempts = 10;
+
+      function tryInit() {
+        attempts++;
+        console.debug('[Age Verify] tryInit attempt', attempts, 'typeof Swal=', typeof Swal);
+        if (typeof Swal !== 'undefined' && Swal.fire) {
+          console.log('[Age Verify] SweetAlert2 loaded, showing popup');
+          setTimeout(window.showAgeVerificationPopup, 500);
+        } else if (attempts < maxAttempts) {
+          console.log('[Age Verify] Attempt', attempts + '/' + maxAttempts, '- SweetAlert2 not ready, retrying...');
+          setTimeout(tryInit, 300);
+        } else {
+          console.error('[Age Verify] Failed to load SweetAlert2 after maximum attempts.');
+          if (typeof Swal === 'undefined') {
+            try {
+              console.debug('[Age Verify] injecting SweetAlert2 fallback script');
+              var s = document.createElement('script');
+              s.src = 'https://cdn.jsdelivr.net/npm/sweetalert2@11.26.21/dist/sweetalert2.min.js';
+              s.onload = function() {
+                console.log('[Age Verify] Fallback SweetAlert2 loaded');
+                attempts = 0;
+                tryInit();
+              };
+              s.onerror = function() {
+                console.warn('[Age Verify] fallback SweetAlert2 failed to load');
+                if (!localStorage.getItem('ageVerified')) {
+                  if (confirm("You must be 21+ to access this site. Are you 21 or older?")) {
+                    localStorage.setItem('ageVerified', 'true');
+                    window.updateAgeDebugUI();
+                  } else {
+                    window.location.href = "/underage.html";
                   }
-                };
-                (document.head || document.body).appendChild(s);
-              } catch (e) {
-                console.error('[Age Verify] error injecting fallback script', e);
-              }
-            } else {
-              // Fallback to browser confirm
-              if (!localStorage.getItem('ageVerified')) {
-                if (confirm("You must be 21+ to access this site. Are you 21 or older?")) {
-                  localStorage.setItem('ageVerified', 'true');
-                } else {
-                  window.location.href = "/underage.html";
                 }
+              };
+              (document.head || document.body).appendChild(s);
+            } catch (e) {
+              console.error('[Age Verify] error injecting fallback script', e);
+            }
+          } else {
+            if (!localStorage.getItem('ageVerified')) {
+              if (confirm("You must be 21+ to access this site. Are you 21 or older?")) {
+                localStorage.setItem('ageVerified', 'true');
+                window.updateAgeDebugUI();
+              } else {
+                window.location.href = "/underage.html";
               }
             }
           }
         }
-        
-        tryInit();
       }
 
-      // Only initialize once when document is ready
-      if (document.readyState !== 'loading') {
-        // DOM is already ready (interactive or complete)
-        initAgeVerification();
-      } else {
-        document.addEventListener('DOMContentLoaded', initAgeVerification, { once: true });
+      tryInit();
+    };
+
+    // Only initialize once when document is ready
+    if (document.readyState !== 'loading') {
+      window.initAgeVerification();
+    } else {
+      document.addEventListener('DOMContentLoaded', window.initAgeVerification, { once: true });
+    }
+
+    // Wire debug widget reset button
+    function wireDebugWidget() {
+      window.updateAgeDebugUI();
+      var btn = document.getElementById('age-verify-reset-btn');
+      if (btn) {
+        btn.addEventListener('click', function() {
+          localStorage.removeItem('ageVerified');
+          localStorage.removeItem('ageVerifiedDate');
+          console.log('[Age Verify] Cleared verification');
+          window.updateAgeDebugUI();
+          setTimeout(function() {
+            window.ageVerificationInitialized = false;
+            window.ageVerificationShowing = false;
+            window.ageVerificationInitialized = true;
+            window.initAgeVerification();
+          }, 250);
+        });
       }
     }
 
-    // Wire age-verify debug widget if present
-    (function() {
-      function updateDebugUI() {
-        var widget = document.getElementById('age-verify-debug');
-        var status = document.getElementById('age-verify-status');
-        if (!widget || !status) return;
-        var verified = localStorage.getItem('ageVerified') === 'true';
-        status.textContent = 'Age Verify: ' + (verified ? 'verified' : 'not verified');
-        widget.style.display = 'block';
-      }
-
-      document.addEventListener('DOMContentLoaded', function() {
-        updateDebugUI();
-        var btn = document.getElementById('age-verify-reset-btn');
-        if (btn) {
-          btn.addEventListener('click', function() {
-            localStorage.removeItem('ageVerified');
-            localStorage.removeItem('ageVerifiedDate');
-            console.log('[Age Verify] Cleared verification from localStorage');
-            // re-run init after a short delay
-            setTimeout(function() {
-              try {
-                window.ageVerificationInitialized = false;
-                initAgeVerification();
-              } catch (e) { console.error(e); }
-              updateDebugUI();
-            }, 250);
-          });
-        }
-      }, { once: true });
-    })();
-  </script>
+    if (document.readyState !== 'loading') {
+      wireDebugWidget();
+    } else {
+      document.addEventListener('DOMContentLoaded', wireDebugWidget, { once: true });
+    }
+})();
+</script>
