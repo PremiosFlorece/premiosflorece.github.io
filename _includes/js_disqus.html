@@ -93,7 +93,7 @@
       }
 
       // If shortname is missing, show fallback immediately and log
-      if (!disqus_shortname || disqus_shortname.indexOf('{{') === 0) {
+      if (!disqus_shortname || disqus_shortname.indexOf('{' + '{') === 0) {
         console.warn('[Disqus] disqus_shortname seems empty or not set:', disqus_shortname);
         showDisqusBlocked();
       } else {
