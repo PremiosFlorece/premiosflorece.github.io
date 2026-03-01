@@ -76,4 +76,3 @@ plugins:
 - jekyll-sitemap
 - jekyll-feed
 - jekyll-seo-tag
-- jekyll-archives
