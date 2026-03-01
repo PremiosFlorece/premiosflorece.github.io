@@ -55,12 +55,8 @@
             showCancelButton: true,
             allowOutsideClick: false,
             allowEscapeKey: false,
-            customClass: {
-              confirmButton: 'btn btn-success btn-lg',
-              cancelButton: 'btn btn-danger btn-lg',
-              popup: 'swal2-bootstrap-5'
-            },
-            buttonsStyling: false,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#dc3545',
             confirmButtonText: "✓ Yes, I'm 21+",
             cancelButtonText: "✗ No, I'm under 21",
             reverseButtons: true,
@@ -141,7 +137,7 @@
               try {
                 console.debug('[Age Verify] injecting SweetAlert2 fallback script');
                 var s = document.createElement('script');
-                s.src = 'https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js';
+                s.src = 'https://cdn.jsdelivr.net/npm/sweetalert2@11.26.21/dist/sweetalert2.min.js';
                 s.onload = function() {
                   console.log('[Age Verify] Fallback SweetAlert2 loaded, attempting to show popup');
                   tryInit();
