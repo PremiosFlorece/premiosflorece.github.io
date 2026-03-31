@@ -19,11 +19,9 @@ bing_verify:
 # - static : pass through formspree.io to validate email sending
 # - disqus : replace contact form by disqus thread
 # - comment the line below if you want to stick with the default PHP contact form
-contact: disqus
-
-# If you use disqus you need disqus shortname
-# https://help.disqus.com/customer/portal/articles/466208
-disqus_shortname: premios-florece
+# BACKUP: Disqus was removed in favor of modern PHP contact form
+# contact: disqus
+# disqus_shortname: premios-florece
 
 # Color settings (hex-codes without the leading hash-tag)
 color:
@@ -41,42 +39,26 @@ footer:
 
 # Social networks usernames (many more available: google-plus, flickr, dribbble, pinterest, instagram, tumblr, linkedin, etc.)
 social:
+  - title: twitter
+    url: http://twitter.com/PremiosFlorece
+  - title: facebook
+    url: https://www.facebook.com/FestivalFloreced/
   - title: instagram
     url: https://www.instagram.com/FestivalFlorece/
-  - title: facebook
-    url: https://www.facebook.com/FestivalFlorece/
-  - title: x-twitter
-    url: https://x.com/PremiosFlorece
+  # - title: stack-overflow
+  #   url: http://stackoverflow.com/questions/tagged/jekyll
+  # - title: bitbucket
+  #   url: http://bitbucket.org/jekyll
   - title: github
     url: http://github.com/PremiosFlorece
 
 # Postal address (add as many lines as necessary)
 address:
-  - line: "Jardín Botánico y Cultural William Miranda Marín"
-  - line: "PR-156, Caguas, 00727"
+  - line: TBD
+  # - line: PR-156, Caguas, 00726
 
 # Credits content
-credits: 'Premios Florece is a non profit foundation. Visit our event: <a href="https://www.instagram.com/FestivalFlorece/">Festival Florece</a>.'
-
-# Sponsors section
-# Set show_sponsors to true when ready to display on the site
-show_sponsors: false
-sponsors:
-  - name: "Sponsor Name"
-    logo: "img/sponsor/sponsor1.png"
-    url: "https://example.com"
-    tier: "gold"
-  # - name: "Another Sponsor"
-  #   logo: "img/sponsor/sponsor2.png"
-  #   url: "https://example.com"
-  #   tier: "silver"
-  # - name: "Third Sponsor"
-  #   logo: "img/sponsor/sponsor3.png"
-  #   url: "https://example.com"
-  #   tier: "bronze"
-  #
-  # Tiers: gold (large), silver (medium), bronze (small)
-  # Add sponsor logos to img/sponsor/ directory
+credits: 'Premios Florece is a non profit foundation. Visit our event: <a href="http://festivalflorece.com">Festival Florece</a>.'
 
 # Build settings
 markdown: kramdown
@@ -96,3 +78,4 @@ plugins:
 - jekyll-sitemap
 - jekyll-feed
 - jekyll-seo-tag
+- jekyll-archives
