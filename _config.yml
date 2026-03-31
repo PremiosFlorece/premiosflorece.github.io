@@ -24,14 +24,14 @@ bing_verify:
 # disqus_shortname: premios-florece
 
 # Color settings (hex-codes without the leading hash-tag)
-# Modern, cohesive cannabis-themed palette
+# Logo-inspired palette: Sage green & black
 color:
-  primary: 1ecc71      # Modern vibrant green (professional medical feel)
-  primary-rgb: "30,204,113"
-  secondary: 0d1117    # Deep charcoal for sophistication
-  secondary-dark: 0a0e27
-  accent: 00d4aa       # Modern teal accent
-  accent-rgb: "0,212,170"
+  primary: 5fad7a      # Muted sage green from logo
+  primary-rgb: "95,173,122"
+  secondary: 1a1a1a    # Deep black for sophistication
+  secondary-dark: 0f0f0f
+  accent: 7bc98f       # Lighter sage accent
+  accent-rgb: "123,201,143"
 
 # Footer settings
 footer:
