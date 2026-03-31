@@ -26,9 +26,9 @@ body {
     transition: all 0.3s ease;
 }
 
-/* Modern voting section with gradient */
+/* Modern voting section with sage green background */
 .voting-section-white {
-    background: linear-gradient(180deg, #ffffff 0%, #f8fafb 100%);
+    background: linear-gradient(180deg, #a8d5ba 0%, #9dd0b3 100%);
     color: #1a1a1a;
     padding: 80px 0;
 }
