@@ -263,7 +263,7 @@ section h2 {
 
 section.success {
     color: #fff;
-    background: linear-gradient(135deg, #{{ site.color.primary }} 0%, #{{ site.color.accent }} 100%);
+    background: linear-gradient(135deg, #{{ site.color.secondary }} 0%, #1a1a1a 50%, #{{ site.color.primary }} 100%);
     position: relative;
     overflow: hidden;
 }
@@ -275,7 +275,7 @@ section.success::before {
     right: -10%;
     width: 500px;
     height: 500px;
-    background: rgba(255,255,255,0.1);
+    background: rgba(95,173,122,0.08);
     border-radius: 50%;
     filter: blur(80px);
 }
@@ -287,7 +287,7 @@ section.success::after {
     left: -5%;
     width: 400px;
     height: 400px;
-    background: rgba(255,255,255,0.08);
+    background: rgba(95,173,122,0.06);
     border-radius: 50%;
     filter: blur(80px);
 }
@@ -381,12 +381,12 @@ section.success::after {
 .btn-success {
     background: linear-gradient(135deg, #{{ site.color.primary }} 0%, #{{ site.color.accent }} 100%);
     border: none;
-    box-shadow: 0 4px 15px rgba(30,204,113,0.4);
+    box-shadow: 0 4px 15px rgba(95,173,122,0.3);
 }
 
 .btn-success:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(30,204,113,0.6);
+    box-shadow: 0 8px 25px rgba(95,173,122,0.5);
 }
 
 .btn-social {
@@ -474,7 +474,7 @@ footer h3 {
 
 footer .footer-above {
     padding-top: 50px;
-    background: linear-gradient(135deg, #{{ site.color.secondary }} 0%, #{{ site.color.secondary-dark }} 100%);
+    background: linear-gradient(135deg, #{{ site.color.secondary }} 0%, #1a1a1a 100%);
 }
 
 footer .footer-col {
@@ -509,7 +509,7 @@ footer .footer-below {
     font-size: 20px;
     line-height: 28px;
     background: linear-gradient(135deg, #{{ site.color.primary }} 0%, #{{ site.color.accent }} 100%);
-    box-shadow: 0 4px 15px rgba(30,204,113,0.4);
+    box-shadow: 0 4px 15px rgba(95,173,122,0.3);
 }
 
 .scroll-top .btn:focus {
@@ -517,7 +517,7 @@ footer .footer-below {
 }
 
 .scroll-top .btn:hover {
-    box-shadow: 0 8px 25px rgba(30,204,113,0.6);
+    box-shadow: 0 8px 25px rgba(95,173,122,0.5);
 }
 
 .sponsor-modal .modal-content {
@@ -605,7 +605,7 @@ footer .footer-below {
 .form-control:focus {
     background: #fff;
     border-color: #{{ site.color.primary }};
-    box-shadow: 0 0 0 3px rgba(30,204,113,0.1);
+    box-shadow: 0 0 0 3px rgba(95,173,122,0.1);
 }
 
 .form-label {
